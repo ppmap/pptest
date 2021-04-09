@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8' />
+<title>pp</title>
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.13.1/mapbox-gl.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.13.1/mapbox-gl.css' rel='stylesheet' />
+<style>
+body { margin:0; padding:0; }
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+#menu {
+    position: absolute;
+    left:  0.5em;
+    top: 0.5em; 
+    padding: 0.2em 0.5em;
+    margin: 0 0;
+    background: #eeeeee;
+    box-shadow: 0px 0px 0px 5px #eeeeee;
+    border: dashed 3px #dddddd;
+    font-family: 'Open Sans', sans-serif;
+    width: 90%;
+    height: auto;
+//    max-width: 300px;
+}
+button.local {
+  display: block;
+  text-align:center;
+  background: #dddddd;
+  padding 0 0.5em 0 0.5em;
+  border: solid 2px #ddd;
+  border-radius: 3px;
+  margin: 2.5px 0px 2.5px 0px;
+  line-height: 1.5em;
+  font-size: 1em;
+  width: 100%;
+}
+
+#lower {
+  width: 90%;
+}
+
+#upper {
+  width: 90%;
+}
+
+</style>
+</head>
+<body>
+
+
+<div id='map'></div>
+<div id='menu'>
+  <form name="question">
+    
+    <input type="range" id="lower" name="lower" min="1920" max="2021" list="tickmarks" value="2021" onChange="refleshPp();"><span id="lwYearNum"></span><br>
+    <input type="range" id="upper" name="upper" min="1920" max="2021" list="tickmarks" value="2015" onChange="refleshPp();"><span id="upYearNum"></span><br>
+    
+    <datalist id="tickmarks">
+      <option value="1900" label="1900"></option>
+      <option value="1910"></option>
+      <option value="1920"></option>
+      <option value="1930"></option>
+      <option value="1940"></option>
+      <option value="1950" label="1950"></option>
+      <option value="1960"></option>
+      <option value="1970"></option>
+      <option value="1980"></option>
+      <option value="1990"></option>
+      <option value="2000" label="2000"></option>
+      <option value="2010"></option>
+      <option value="2020"></option>
+    </datalist>
+    
+    
+    <span>撮影計画機関：</span>
+    <input type="text" id="kikan" name="kikan" value="" onChange="refleshPp();">
+    
+    <span>　色：</span>
+    <select name="pcolor" onChange="refleshPp();">
+      <option value="cm">カラーとモノクロ</option>
+      <option value="c">カラーだけ</option>
+      <option value="m">モノクロだけ</option>
+    </select>
+    
+    <span>　縮尺：</span>
+    <select name="pscalestart" onChange="refleshPp();">
+      <option value="0">--</option>
+      <option value="5000">1/5000</option>
+      <option value="10000">1/10000</option>
+      <option value="20000">1/20000</option>
+      <option value="25000">1/25000</option>
+      <option value="50000">1/50000</option>
+      <option value="100000">1/100000</option>
+      <option value="200000">1/200000</option>
+      <option value="500000">1/500000</option>
+      <option value="1000000">1/1000000</option>
+      <option value="5000000">1/5000000</option>
+    </select>
+    <span>～</span>
+    <select name="pscaleend" onChange="refleshPp();">
+      <option value="5000">1/5000</option>
+      <option value="10000">1/10000</option>
+      <option value="20000">1/20000</option>
+      <option value="25000">1/25000</option>
+      <option value="50000">1/50000</option>
+      <option value="100000">1/100000</option>
+      <option value="200000">1/200000</option>
+      <option value="500000">1/500000</option>
+      <option value="1000000">1/1000000</option>
+      <option value="5000000">1/5000000</option>
+      <option value="99999999" selected="selected">--</option>
+    </select>
+    
+    <!--
+    <input type="number" id="pscale" name="pscale" value="0" onChange="refleshPp();">
+    <select name="pscalecond">
+      <option value="higher">以上</option>
+      <option value="equal">に等しい</option>
+      <option value="lower">以下</option>
+    </select>
+    -->
+    
+  </form>
+</div>
+
+<script>
+/*************************************************/
+/*Mapbox 関係設定                                */
+/*************************************************/
+var map = new mapboxgl.Map({
+  container: 'map', // container id
+  hash: true, //add #position on URL
+  style: './style.json', // stylesheet location
+  center: [139.78148, 35.768793], // starting position [lng, lat]
+  zoom: 9, // starting zoom
+  minZoom: 6,
+  maxZoom: 17.99,
+  localIdeographFontFamily: ['MS Gothic', 'Hiragino Kaku Gothic Pro', 'sans-serif']
+});
+
+
+map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
+map.addControl(new mapboxgl.ScaleControl() );
+
+map.showTileBoundaries = true;
+
+</script>
+
+<script src='./pp.js'></script>
+
+<script>
+/*************************************************/
+/*ポップアップ表示設定                           */
+/*************************************************/
+//ポップアップ表示
+var popup = new mapboxgl.Popup();
+map.on('click', function(e) {
+  
+  
+  //レンダリングされた地物を取得
+  var features = map.queryRenderedFeatures(e.point);
+  if (!features.length) {
+    popup.remove();
+    return;
+  }
+  
+  var htmlString = ""; //ポップアップ
+  
+  var feature = features[0]; //一番上のものだけ表示
+  console.log(feature);
+  
+  if(feature.sourceLayer && feature.sourceLayer == "pp"){
+  
+      var featureProperties = "<table>";
+      for(name in feature.properties){
+          if(name == "ID"){
+              featureProperties = featureProperties + "<tr><td style='vertical-align:top; color:#0000ff;'>" + name + "</td>";
+              featureProperties = featureProperties + "<td style='color:#000000;'>"
+                                + "<a target='_blank' href='https://mapps.gsi.go.jp/map-lib-api/apiContentsView.do?specificationId=" + feature.properties[name] + "'>"
+                                + feature.properties[name] + "</a>" + "</td></tr>";
+              /*
+              featureProperties = featureProperties + "<td style='color:#000000;'>"
+                                + "<img src='https://mapps.gsi.go.jp/contentsImage.do?specificationId=" + feature.properties[name]  + "'>"
+                                + "</td></tr>";
+              */
+          }else{
+              featureProperties = featureProperties + "<tr><td style='vertical-align:top; color:#0000ff;'>" + name + "</td>";
+              featureProperties = featureProperties + "<td style='color:#000000;'>" + feature.properties[name] + "</td></tr>";
+          }
+      
+      }
+      featureProperties = featureProperties +  "</table>";
+      htmlString = htmlString + "<span style='font-weight:bold;' >" + feature.layer.id + ":" + feature.sourceLayer + "</span>" + featureProperties;
+      
+  }else if(feature.sourceLayer && feature.sourceLayer == "ppcls"){
+  
+      var featureProperties = "<table>";
+      for(name in feature.properties){
+          if(name == "撮影年月日"){
+              var pd = +feature.properties[name].substr(0,4);
+              featureProperties = featureProperties + "<tr><td style='vertical-align:top; color:#0000ff;'>" + name + "</td>";
+              featureProperties = featureProperties + "<td style='color:#000000;'>" + pd + "</td></tr>";
+          }else if(name == "撮影縮尺"){
+              var pd = Math.floor(+feature.properties[name]/1000) * 1000;
+              featureProperties = featureProperties + "<tr><td style='vertical-align:top; color:#0000ff;'>" + name + "</td>";
+              featureProperties = featureProperties + "<td style='color:#000000;'>" + pd + "</td></tr>";
+          }else if(name == "カラー種別" || name == "撮影計画機関"){
+              featureProperties = featureProperties + "<tr><td style='vertical-align:top; color:#0000ff;'>" + name + "</td>";
+              featureProperties = featureProperties + "<td style='color:#000000;'>" + feature.properties[name] + "</td></tr>";
+          }
+      
+      }
+      featureProperties = featureProperties +  "</table>";
+      featureProperties = featureProperties +  "<div>※個別の写真を見るには、地図を拡大してください。</div>";
+      htmlString = htmlString + "<span style='font-weight:bold;' >" + feature.layer.id + ":" + feature.sourceLayer + "</span>" + featureProperties;
+  
+  }
+
+  if (!htmlString || htmlString == "") {
+    popup.remove();
+    return;
+  }
+  
+  /*
+  for(i in features){
+      
+      
+      //ポップアップ表示 --------------------
+      var feature = features[i];
+      if(!feature.sourceLayer  || feature.sourceLayer != "pp") continue;
+      //console.log(feature);
+      
+      var featureProperties = "<table>";
+      for(name in feature.properties){
+          featureProperties = featureProperties + "<tr><td style='vertical-align:top; color:#0000ff;'>" + name + "</td>";
+          featureProperties = featureProperties + "<td style='color:#000000;'>" + feature.properties[name] + "</td></tr>";
+      }
+      featureProperties = featureProperties +  "</table>";
+      
+      htmlString = htmlString + "<span style='font-weight:bold;' >" + feature.layer.id + ":" + feature.sourceLayer + "</span>" + featureProperties;
+      //htmlString = htmlString + "<br>データソース：" + feature.sourceLayer + "<br>--属性値：" + JSON.stringify( feature.properties );
+      //レイヤID => feature.layer.id
+    
+    
+  }
+  */
+  
+  //結果の表示
+  //ポップアップ
+  popup.setLngLat([ e.lngLat.lng, e.lngLat.lat ])
+    .setHTML(htmlString)
+    .addTo(map);
+  
+});
+
+
+</script>
+</body>
+</html>
