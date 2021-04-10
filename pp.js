@@ -14,7 +14,6 @@ const yearsList = [
 
 const startYear = 1900;
 const endYear = 2021;
-const root = "https://ppmap.github.io/pptest";
 
 const showPp = (upYear, lwYear, filterArr) => {
   const upYears = Math.ceil(upYear/10)*10;
@@ -85,6 +84,10 @@ const showPp = (upYear, lwYear, filterArr) => {
     
     
     }
+    
+    
+    //チェックボックスの確認
+    if(!document.selection.selectChizu.checked) return;
     
     
     //if(+ys >= lwYears && upYears > +ys){
