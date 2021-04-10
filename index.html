@@ -64,9 +64,6 @@ button.local {
   <div>■写真の絞り込み設定</div>
   <form name="question">
     
-    <input type="range" id="lower" name="lower" min="1920" max="2021" list="tickmarks" value="2021" onChange="refleshPp();"><span id="lwYearNum"></span><br>
-    <input type="range" id="upper" name="upper" min="1920" max="2021" list="tickmarks" value="2015" onChange="refleshPp();"><span id="upYearNum"></span><br>
-    
     <datalist id="tickmarks">
       <option value="1900" label="1900"></option>
       <option value="1910"></option>
@@ -132,13 +129,17 @@ button.local {
     </select>
     -->
     
+    
+    <input type="range" id="lower" name="lower" min="1920" max="2021" list="tickmarks" value="2021" onChange="refleshPp();"><span id="lwYearNum"></span><br>
+    <input type="range" id="upper" name="upper" min="1920" max="2021" list="tickmarks" value="2015" onChange="refleshPp();"><span id="upYearNum"></span><br>
+    
   </form>
 </div>
 
 <script>
 
 
-const root = "https://ppmap.github.io/pptest";
+const root = "https://mghs15.github.io/pppbfdata";
 
 
 /*************************************************/

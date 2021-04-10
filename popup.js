@@ -47,7 +47,7 @@ map.on('click', function(e) {
       var featureProperties = "<table>";
       for(name in feature.properties){
           if(name == "ID"){
-              featureProperties = featureProperties + "<tr><td style='vertical-align:top; color:#0000ff;'>" + name + "</td>";
+              featureProperties = featureProperties + "<tr><td style='vertical-align:top; color:#555555;'>" + name + "</td>";
               featureProperties = featureProperties + "<td style='color:#000000;'>"
                                 + "<a target='_blank' href='https://mapps.gsi.go.jp/map-lib-api/apiContentsView.do?specificationId=" + feature.properties[name] + "'>"
                                 + feature.properties[name] + "</a>" + "</td></tr>";
@@ -57,7 +57,7 @@ map.on('click', function(e) {
                                 + "</td></tr>";
               */
           }else{
-              featureProperties = featureProperties + "<tr><td style='vertical-align:top; color:#0000ff;'>" + name + "</td>";
+              featureProperties = featureProperties + "<tr><td style='vertical-align:top; color:#555555;'>" + name + "</td>";
               featureProperties = featureProperties + "<td style='color:#000000;'>" + feature.properties[name] + "</td></tr>";
           }
       
@@ -72,14 +72,14 @@ map.on('click', function(e) {
       for(name in feature.properties){
           if(name == "撮影年月日"){
               var pd = +feature.properties[name].substr(0,4);
-              featureProperties = featureProperties + "<tr><td style='vertical-align:top; color:#0000ff;'>" + name + "</td>";
+              featureProperties = featureProperties + "<tr><td style='vertical-align:top; color:#555555;'>" + name + "</td>";
               featureProperties = featureProperties + "<td style='color:#000000;'>" + pd + "</td></tr>";
           }else if(name == "撮影縮尺"){
               var pd = Math.floor(+feature.properties[name]/1000) * 1000;
-              featureProperties = featureProperties + "<tr><td style='vertical-align:top; color:#0000ff;'>" + name + "</td>";
+              featureProperties = featureProperties + "<tr><td style='vertical-align:top; color:#555555;'>" + name + "</td>";
               featureProperties = featureProperties + "<td style='color:#000000;'>" + pd + "</td></tr>";
           }else if(name == "カラー種別" || name == "撮影計画機関"){
-              featureProperties = featureProperties + "<tr><td style='vertical-align:top; color:#0000ff;'>" + name + "</td>";
+              featureProperties = featureProperties + "<tr><td style='vertical-align:top; color:#555555;'>" + name + "</td>";
               featureProperties = featureProperties + "<td style='color:#000000;'>" + feature.properties[name] + "</td></tr>";
           }
       
@@ -99,34 +99,37 @@ map.on('click', function(e) {
       console.log(zurekiJson);
       */
       
+      const zurekiPageUrl = "https://mapps.gsi.go.jp/history.html#figureNameId=" + feature.properties.figureNameId;
+      
       var featureProperties = "<table>";
       for(name in feature.properties){
           if(name == "scale"){
-              featureProperties = featureProperties + "<tr><td style='vertical-align:top; color:#0000ff;'>" + "縮尺" + "</td>";
+              featureProperties = featureProperties + "<tr><td style='vertical-align:top; color:#555555;'>" + "縮尺" + "</td>";
               featureProperties = featureProperties + "<td style='color:#000000;'>" + feature.properties[name] + "</td></tr>";
           }else if(name == "Name"){
-              featureProperties = featureProperties + "<tr><td style='vertical-align:top; color:#0000ff;'>" + "図名" + "</td>";
+              featureProperties = featureProperties + "<tr><td style='vertical-align:top; color:#555555;'>" + "図名" + "</td>";
               featureProperties = featureProperties + "<td style='color:#000000;'>" + feature.properties[name] + "</td></tr>";
           }else if(name == "figureNameId"){
-              featureProperties = featureProperties + "<tr><td style='vertical-align:top; color:#0000ff;'>" + name + "</td>";
+              featureProperties = featureProperties + "<tr><td style='vertical-align:top; color:#555555;'>" + name + "</td>";
               featureProperties = featureProperties + "<td style='color:#000000;'>"
                                 /*
                                 + "<a target='_blank' href='https://mapps.gsi.go.jp/maplibSearch.do?searchMethod=2&zoomLevel=11&listNumber=" + feature.properties[name] + "'>"
                                 + feature.properties[name] + "</a>"
                                 */
                                 + feature.properties[name] + " →"
-                                + "<a target='_blank' href='https://mapps.gsi.go.jp/history.html#ll=37.3701572,140.4052734&z=5&target=t25000&figureNameId=" + feature.properties[name] + "'>"
-                                + "図歴" + "</a>"
+                                + "<a target='_blank' href='" + zurekiPageUrl + "'>" + "図歴" + "</a>"
                                 + "</td></tr>";
                                 
           }else if(name == "カラー種別" || name == "撮影計画機関"){
-              featureProperties = featureProperties + "<tr><td style='vertical-align:top; color:#0000ff;'>" + name + "</td>";
+              featureProperties = featureProperties + "<tr><td style='vertical-align:top; color:#555555;'>" + name + "</td>";
               featureProperties = featureProperties + "<td style='color:#000000;'>" + feature.properties[name] + "</td></tr>";
           }
       
       }
       featureProperties = featureProperties +  "</table>";
-      featureProperties = featureProperties +  "<div>※個別の地図を見るには、図歴から選択してください。</div>";
+      featureProperties = featureProperties +  "<div>※個別の地図を見るには、"
+                        + "<a target='_blank' href='" + zurekiPageUrl + "'>" + "図歴" + "</a>"
+                        + "から選択してください。</div>";
       htmlString = htmlString + "<span style='font-weight:bold;' >" + "地形図・地勢図" +  "</span>" + featureProperties;
       //htmlString = htmlString + "<span style='font-weight:bold;' >" + feature.layer.id + ":" + feature.sourceLayer + "</span>" + featureProperties;
   
@@ -148,7 +151,7 @@ map.on('click', function(e) {
       
       var featureProperties = "<table>";
       for(name in feature.properties){
-          featureProperties = featureProperties + "<tr><td style='vertical-align:top; color:#0000ff;'>" + name + "</td>";
+          featureProperties = featureProperties + "<tr><td style='vertical-align:top; color:#555555;'>" + name + "</td>";
           featureProperties = featureProperties + "<td style='color:#000000;'>" + feature.properties[name] + "</td></tr>";
       }
       featureProperties = featureProperties +  "</table>";

@@ -106,8 +106,8 @@ const refleshZu = () =>{
   const l = +document.question.lower.value;
   const u = +document.question.upper.value;
   
-  document.getElementById('lwYearNum').innerText = l;
-  document.getElementById('upYearNum').innerText = u;
+  document.getElementById('lwYearNum').innerText = l + "年";
+  document.getElementById('upYearNum').innerText = u + "年";
   
   const upy = Math.max(l,u);
   const lwy = Math.min(l,u);
