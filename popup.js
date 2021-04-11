@@ -29,6 +29,7 @@ var loadJSON = function(path){
 var popup = new mapboxgl.Popup();
 map.on('click', function(e) {
   
+  console.log(e);
   
   //レンダリングされた地物を取得
   var features = map.queryRenderedFeatures(e.point);
@@ -68,6 +69,7 @@ map.on('click', function(e) {
       
   }else if(feature.sourceLayer && feature.sourceLayer == "ppcls"){
   
+      
       var featureProperties = "<table>";
       for(name in feature.properties){
           if(name == "撮影年月日"){
@@ -85,7 +87,10 @@ map.on('click', function(e) {
       
       }
       featureProperties = featureProperties +  "</table>";
-      featureProperties = featureProperties +  "<div>※個別の写真を見るには、地図を拡大してください。</div>";
+      featureProperties = featureProperties 
+                        + "<div>※個別の写真を見るには、<a href='#' onClick='map.flyTo(" 
+                        + "{center: [" + e.lngLat.lng + "," +  e.lngLat.lat + "], zoom: 11}"
+                        + ");'>地図を拡大</a>してください。</div>";
       htmlString = htmlString + "<span style='font-weight:bold;' >" + "単写真（集計）" +  "</span>" + featureProperties;
       //htmlString = htmlString + "<span style='font-weight:bold;' >" + feature.layer.id + ":" + feature.sourceLayer + "</span>" + featureProperties;
   
