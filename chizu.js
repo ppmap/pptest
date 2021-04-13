@@ -5,13 +5,15 @@ const showZu = (upYear, lwYear, filterArr) => {
   
   //フィルタ条件の整理（今は使わない）
   const filterYear = [
-          'all',
+          'all'/*
+          ,
           ['>=', ["to-number", ["slice", ["get", "撮影年月日"], 0, 4]], lwYear],
           ['<=', ["to-number", ["slice", ["get", "撮影年月日"], 0, 4]], upYear]
+          */
   ];
       
   const filter = filterYear.concat(filterArr);
-
+  console.log(filter);
   
     
   //大縮尺用
@@ -30,8 +32,16 @@ const showZu = (upYear, lwYear, filterArr) => {
         map.removeLayer(layerid + 'text');
     }
     
+    
     //チェックボックスの確認
-    if(!document.selection.selectChizu.checked) return;
+    if(!document.selection.selectChizu.checked){ 
+      document.zuFilter.style.display = "none";
+      return;
+      
+    }else{
+      document.zuFilter.style.display = "";
+    }
+    
     
     if(!map.getSource(sourceid)){
       map.addSource(sourceid, {
@@ -48,7 +58,7 @@ const showZu = (upYear, lwYear, filterArr) => {
       'source': sourceid,
       'minzoom': 6,
       'maxzoom': 22,
-      //'filter': filter,
+      'filter': filter,
       'layout': {
         'visibility': 'visible'
       },
@@ -103,6 +113,34 @@ const showZu = (upYear, lwYear, filterArr) => {
 }
 
 const refleshZu = () =>{
+
+  const filterArr = [];
+  
+  
+  const scaleFilter = ["any"];
+  
+  if(document.zuFilter.zu200000.checked){
+    scaleFilter.push(["==", ["get", "scale"], 200000]);
+  }
+  
+  if(document.zuFilter.zu50000.checked){
+    scaleFilter.push(["==", ["get", "scale"], 50000]);
+  }
+  
+  if(document.zuFilter.zu25000.checked){
+    scaleFilter.push(["==", ["get", "scale"], 25000]);
+  }
+  
+  if(document.zuFilter.zu10000.checked){
+    scaleFilter.push(["==", ["get", "scale"], 10000]);
+  }
+  
+  
+  if(scaleFilter.length > 1){
+    filterArr.push(scaleFilter);
+  }
+  
+  /****************************************************
   const l = +document.question.lower.value;
   const u = +document.question.upper.value;
   
@@ -113,8 +151,6 @@ const refleshZu = () =>{
   const lwy = Math.min(l,u);
   console.log(upy, lwy);
   
-  const filterArr = [];
-  /****************************************************
   const kikan = document.question.kikan.value;
   console.log(kikan);
   if(kikan){
@@ -139,7 +175,7 @@ const refleshZu = () =>{
   
   console.log(filterArr);
   ****************************************************/
-  showZu(upy, lwy, filterArr);
+  showZu(1900, 2030, filterArr);
 }
 
 map.on('load', function(){

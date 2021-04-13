@@ -58,12 +58,13 @@ button.local {
 <div id='menu'>
   <form name="selection">
     <input type="checkbox" id="selectPp" name="selectPp" checked="checked" onChange="refleshPp();">空中写真
-    <input type="checkbox" id="selectChizu" name="selectChizu" checked="checked" onChange="refleshZu();">地形図・地勢図
+    <input type="checkbox" id="selectChizu" name="selectChizu" onChange="refleshZu();">地形図・地勢図
   </form>
+  
+  
+  <form name="question" id="question" style="display:none;">
   <hr>
   <div>■写真の絞り込み設定</div>
-  <form name="question">
-    
     <datalist id="tickmarks">
       <option value="1900" label="1900"></option>
       <option value="1910"></option>
@@ -79,6 +80,7 @@ button.local {
       <option value="2010"></option>
       <option value="2020"></option>
     </datalist>
+    
     
     <!--
     <span>撮影計画機関：</span>
@@ -135,10 +137,18 @@ button.local {
     <input type="range" id="upper" name="upper" min="1920" max="2021" list="tickmarks" value="2015" onChange="refleshPp();"><span id="upYearNum"></span><br>
     
   </form>
+  
+  <form name="zuFilter" id="zuFilter" style="display:none;">
+  <hr>
+  <div>■地形図・地勢図の絞り込み設定</div>
+    <input type="checkbox" id="zu200000" name="zu200000" checked="checked" onChange="refleshZu();">20万分の1
+    <input type="checkbox" id="zu50000" name="zu50000" checked="checked" onChange="refleshZu();">5万分の1
+    <input type="checkbox" id="zu25000" name="zu25000" checked="checked" onChange="refleshZu();">2万5千分の1
+    <input type="checkbox" id="zu10000" name="zu10000" checked="checked" onChange="refleshZu();">1万分の1
+  </form>
 </div>
 
 <script>
-
 
 const root = "https://ppmap.github.io/pptest";
 

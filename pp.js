@@ -87,7 +87,13 @@ const showPp = (upYear, lwYear, filterArr) => {
     
     
     //チェックボックスの確認
-    if(!document.selection.selectPp.checked) return;
+    if(!document.selection.selectPp.checked){ 
+      document.question.style.display = "none";
+      return;
+      
+    }else{
+      document.question.style.display = "";
+    }
     
     
     //if(+ys >= lwYears && upYears > +ys){
