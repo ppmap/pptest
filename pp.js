@@ -202,8 +202,13 @@ const showPp = (upYear, lwYear, filterArr) => {
           ["has", "point_count"],["get", "point_count"],
           "1"
         ],
+        'text-variable-anchor': ["center", "left", "right", "top", "bottom", "top-left", "top-right", "bottom-left", "bottom-right"],
         'text-font': ["NotoSansCJKjp-Regular"],
-        'text-allow-overlap': true,
+        'text-allow-overlap': false,
+        'symbol-sort-key': ["case",
+          ["has", "point_count"],["get", "point_count"],
+          1
+        ],
         'visibility': 'visible'
       },
       'paint': {
