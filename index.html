@@ -61,7 +61,7 @@ button.local {
     <input type="checkbox" id="selectChizu" name="selectChizu" onChange="refleshZu();">地形図・地勢図
   </form>
   
-  
+  <div id='aco' name='aco'style="display:;">
   <form name="question" id="question" style="display:none;">
   <hr>
   <div>■写真の絞り込み設定</div>
@@ -148,14 +148,14 @@ button.local {
     <input type="checkbox" id="zu25000" name="zu25000" checked="checked" onChange="refleshZu();">2万5千分の1
     <input type="checkbox" id="zu10000" name="zu10000" checked="checked" onChange="refleshZu();">1万分の1
   </form>
+  
+  </div>
+  <button type="button" class="local" onclick="showFilterSetting()" ><span id="showFilterSettingMode">▲詳細設定を閉じる</span></button>
 </div>
 
 <script>
 
 const root = "https://ppmap.github.io/pptest";
-//const root = "http://localhost/210405_pp/docs";
-//const root = "https://mghs15.github.io/pp2pbf";
-//const root = "https://mghs15.github.io/pppbfdata";
 
 
 /*************************************************/
@@ -177,6 +177,30 @@ map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
 map.addControl(new mapboxgl.ScaleControl() );
 
 map.showTileBoundaries = false;
+
+
+/*************************************************/
+/*UI 関係設定                                    */
+/*************************************************/
+
+let isShowFilterSetting = true;
+
+const showFilterSetting = () => {
+  const element = document.getElementById("aco");
+  console.log(element );
+  
+  if(isShowFilterSetting ){ //閉じる作業
+    element.style.display = "none";
+    document.getElementById("showFilterSettingMode").innerText = "▼詳細設定を開く";
+  }else{ //開く作業
+    element.style.display = "";
+    document.getElementById("showFilterSettingMode").innerText = "▲詳細設定を閉じる";
+  }
+  
+  isShowFilterSetting = !isShowFilterSetting;
+
+}
+
 
 </script>
 
