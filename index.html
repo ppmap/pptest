@@ -82,11 +82,13 @@ button.local {
     </datalist>
     
     
+    <div style="display:none;">
+      
     <!--
     <span>撮影計画機関：</span>
     -->
     <input type="hidden" id="kikan" name="kikan" value="" onChange="refleshPp();">
-    
+
     <span>　色：</span>
     <select name="pcolor" onChange="refleshPp();">
       <option value="cm">カラーとモノクロ</option>
@@ -122,6 +124,8 @@ button.local {
       <option value="5000000">1/5000000</option>
       <option value="99999999" selected="selected">--</option>
     </select>
+    
+    </div>
     
     <!--
     <input type="number" id="pscale" name="pscale" value="0" onChange="refleshPp();">
