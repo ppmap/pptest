@@ -69,15 +69,17 @@ const showZu = (upYear, lwYear, filterArr) => {
           11,8
         ],
         'circle-color': ['rgba', 
+          /*
           [
             "case", 
             ["<", ["get", "scale"], 25000], 250, 
             ["<", ["get", "scale"], 50000], 150, 
             ["<", ["get", "scale"], 200000], 50, 
             0
-          ],
-          0,
-          255,
+          ],*/
+          60,
+          200,
+          100,
           1]
       },
       'source-layer': 'zu'
