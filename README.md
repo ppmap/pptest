@@ -1,12 +1,14 @@
 # pptest
 
-�f�[�^���e�͐��m�ł͂Ȃ��̂Œ��ӁB
+データ内容は正確ではないので注意。
 
-## �Q�l������
-### �f�[�^�o�T
-* �n���@�^�C��
-* �n���@�^�C���i�P�ʐ^�j�����H
-* �n�}�E�󒆎ʐ^�{���T�[�r�X
-### �Q�l����
+https://ppmap.github.io/pptest/
+
+## 参考文献等
+### データ出典
+* 地理院タイル
+* 地理院タイル（単写真）を加工
+* 地図・空中写真閲覧サービス
+### 参考文献
 * https://webbibouroku.com/Blog/Article/node-bom-utf8
 * https://developer.mozilla.org/ja/
